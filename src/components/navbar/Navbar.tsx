@@ -1,6 +1,6 @@
 import Logo from "./Logo";
 import NavSearch from "./NavSearch";
-import ProfileDropdown from "./ProfileDropdown";
+import LinksDropdown from "./LinksDropdown";
 
 const Navbar = () => {
   return (
@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="container flex flex-col sm:flex-row sm:justify-between sm:items-center flex-wrap gap-4 py-10">
         <Logo />
         <NavSearch />
-        <ProfileDropdown />
+        <LinksDropdown />
       </div>
     </nav>
   );
