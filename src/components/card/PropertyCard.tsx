@@ -19,7 +19,7 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
   } = property;
 
   return (
-    <article className="group relative:">
+    <article className="group relative">
       <Link href={`/properties/${propertyID}`}>
         <div className="relative h-[300px] mb-2 overflow-hidden rounded-md">
           <Image
@@ -49,8 +49,12 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
               {formatCurrency(pricePerNight)}/night
             </span>
           </p>
+          <Location city={city} />
         </div>
       </Link>
+      <div className="absolute top-5 right-5 z-10">
+        <FavoriteButton propertyID={propertyID} />
+      </div>
     </article>
   );
 };
