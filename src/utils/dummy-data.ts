@@ -9,7 +9,8 @@ const dummyData: Array<PropertyCardProps> = [
     numberOfReviews: 250,
     city: "Miami, FL",
     pricePerNight: 200,
-    imageUrl: "https://example.com/images/oceanview.jpg",
+    imageUrl:
+      "https://hoteldel.com/wp-content/uploads/2021/01/hotel-del-coronado-views-suite-K1TOS1-K1TOJ1-1600x900-1.jpg",
   },
   {
     id: "2",
@@ -19,7 +20,8 @@ const dummyData: Array<PropertyCardProps> = [
     numberOfReviews: 180,
     city: "Aspen, CO",
     pricePerNight: 150,
-    imageUrl: "https://example.com/images/mountain-escape.jpg",
+    imageUrl:
+      "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWx8ZW58MHx8MHx8fDA%3D",
   },
   {
     id: "3",
@@ -29,7 +31,8 @@ const dummyData: Array<PropertyCardProps> = [
     numberOfReviews: 320,
     city: "San Francisco, CA",
     pricePerNight: 250,
-    imageUrl: "https://example.com/images/city-lights.jpg",
+    imageUrl:
+      "https://images.bubbleup.com/width1920/quality35/mville2017/1-brand/1-margaritaville.com/gallery-media/220803-compasshotel-medford-pool-73868-1677873697-78625-1694019828.jpg",
   },
   {
     id: "4",
@@ -39,7 +42,8 @@ const dummyData: Array<PropertyCardProps> = [
     numberOfReviews: 100,
     city: "Las Vegas, NV",
     pricePerNight: 300,
-    imageUrl: "https://example.com/images/desert-oasis.jpg",
+    imageUrl:
+      "https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg",
   },
   {
     id: "5",
@@ -49,7 +53,8 @@ const dummyData: Array<PropertyCardProps> = [
     numberOfReviews: 75,
     city: "San Jose, CA",
     pricePerNight: 120,
-    imageUrl: "https://example.com/images/countryside-inn.jpg",
+    imageUrl:
+      "https://cdn.prod.website-files.com/5c6d6c45eaa55f57c6367749/65046bf150d1abb7e5911702_x-65046bcfdc4f0.webp",
   },
 ];
 
