@@ -1,5 +1,11 @@
+import PropertiesContainer from "@/components/home/PropertiesContainer";
+
 const HomePage = () => {
-  return <h1 className="text-3xl">Home Page</h1>;
+  return (
+    <section>
+      <PropertiesContainer />
+    </section>
+  );
 };
 
 export default HomePage;
