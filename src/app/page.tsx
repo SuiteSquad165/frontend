@@ -1,9 +1,13 @@
+import LoadingCards from "@/components/card/LoadingCards";
 import PropertiesContainer from "@/components/home/PropertiesContainer";
+import { Suspense } from "react";
 
 const HomePage = () => {
   return (
     <section>
-      <PropertiesContainer />
+      <Suspense fallback={<LoadingCards />}>
+        <PropertiesContainer />
+      </Suspense>
     </section>
   );
 };
