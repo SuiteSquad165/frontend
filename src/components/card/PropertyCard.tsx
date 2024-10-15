@@ -11,6 +11,8 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
     name,
     imageUrl,
     pricePerNight,
+    numberOfReviews,
+    rating,
     city,
     id: propertyID,
     description,
@@ -28,10 +30,15 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
             className="rounded-md object-cover transform group-hover:scale-110 transition-transform duration-500"
           />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-between">
           <h3 className="text-sm font-semibold items-center">
             {name.substring(0, 30)}
           </h3>
+          <PropertyRating
+            numberOfReviews={numberOfReviews}
+            rating={rating}
+            inPage={false}
+          />
         </div>
         <p className="text-sm mt-1 text-muted-foreground">
           {description.substring(0, 40)}
