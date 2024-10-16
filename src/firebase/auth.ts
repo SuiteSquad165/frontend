@@ -7,7 +7,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "@/firebase/config";
-import { setCurrentUser } from "@/store/slices/authSlice";
+import { clearUser, setCurrentUser } from "@/store/slices/authSlice";
 import { AppDispatch } from "@/store";
 
 // Sign in with Email and Password
@@ -24,7 +24,7 @@ export const signInWithGoogle = async (dispatch: AppDispatch) => {
   try {
     const result = await signInWithPopup(auth, provider);
     dispatch(setCurrentUser(result.user));
-    return result.user; // Returns the signed-in user
+    return result.user;
   } catch (error) {
     console.error("Sign-in failed:", error);
     throw error;
@@ -41,6 +41,6 @@ export const register = async (
 
 // Sign out
 export const logout = async (dispatch: AppDispatch): Promise<void> => {
-  dispatch(setCurrentUser(null));
+  dispatch(clearUser());
   return await signOut(auth);
 };
