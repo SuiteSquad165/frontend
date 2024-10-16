@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
+import StoreProvider from "@/store/provider";
 
 export const metadata: Metadata = {
   title: "LikeHome",
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main className="container py-10">{children}</main>
+        <StoreProvider>
+          <Navbar />
+          <main className="container py-10">{children}</main>
+        </StoreProvider>
       </body>
     </html>
   );
