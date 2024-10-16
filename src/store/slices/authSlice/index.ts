@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
 
-interface SerializableUser {
+export interface SerializableUser {
   uid: string;
   email: string | null;
   displayName: string | null;
