@@ -1,0 +1,40 @@
+.splitlayoutcontainer {
+    display: flex;
+    height: 100vh; 
+    width: 100vw;
+}
+  
+.left {
+    flex: 40%; 
+    background: linear-gradient(180deg, #03045E 51%, #0F109A 100%);
+    position: relative;
+}
+  
+.right { 
+    flex: 60%;
+    position: relative;
+}
+
+.formContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+}
+
+#title {
+    /* layout */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+
+    /* font style */
+    font-family: KoHo;
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 83.2px;
+    text-align: center;
+    color: white;
+}
