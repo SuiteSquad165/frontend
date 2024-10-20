@@ -5,7 +5,6 @@ import Image from "next/image";
 
 const UserIcon = () => {
   const user = useSelector((state: RootState) => state.auth.user);
-  console.log("Hello");
   return (
     <>
       {user?.photoURL ? (
