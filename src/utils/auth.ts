@@ -10,7 +10,7 @@ type JWT = {
 const TOKEN_KEY = "tokenData";
 
 // Store token in sessionStorage
-const storeToken = (accessToken: string, expiresAt: number) => {
+export const storeToken = (accessToken: string, expiresAt: number) => {
   const tokenData = { accessToken, expiresAt };
   sessionStorage.setItem(TOKEN_KEY, btoa(JSON.stringify(tokenData)));
 };
