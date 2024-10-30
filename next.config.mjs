@@ -32,6 +32,23 @@ const nextConfig = {
 
   // This is for deployment build for firebase deployment
   output: "export",
+
+  // Mapping internally with backend api
+  async rewrites() {
+    const rewrites = [];
+
+    if (process.env.NODE_ENV === "development") {
+      const API_HOST = process.env.API_HOST || "";
+
+      // Existing lake rewrite
+      rewrites.push({
+        source: "/:path*",
+        destination: `${API_HOST}/:path*`,
+      });
+    }
+
+    return rewrites;
+  },
 };
 
 export default nextConfig;
