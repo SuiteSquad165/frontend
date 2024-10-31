@@ -21,15 +21,11 @@ jobs:
       # Step 3: Install dependencies for the main project
       - run: npm install
 
-      # Step 4: Install dependencies for Firebase Functions
+      # Step 4: Install dependencies for Firebase Functions (alternative approach)
       - name: Install Functions Dependencies
-        run: |
-          cd functions
-          npm install
-        # Move back to the root directory
-        working-directory: ./functions
+        run: npm install --prefix ./functions
 
-      # Step 5: Set environment variables from GitHub Secrets (if needed)
+      # Step 5: Set environment variables from GitHub Secrets
       - name: Set Firebase Environment Variables
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
@@ -59,10 +55,7 @@ jobs:
 
       # Step 7: Compile TypeScript for Firebase Functions
       - name: Build Firebase Functions
-        run: |
-          cd functions
-          npm run build
-        working-directory: ./functions
+        run: npm run build --prefix ./functions
 
       # Step 8: Deploy to Firebase Hosting and Functions
       - uses: FirebaseExtended/action-hosting-deploy@v0
