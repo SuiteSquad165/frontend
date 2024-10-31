@@ -31,12 +31,11 @@ jobs:
       - name: Enable Firebase web frameworks
         run: firebase experiments:enable webframeworks
 
-      # Step 6: Initialize Firebase Hosting in non-interactive mode
+      # Step 6: Initialize Firebase Hosting
       - name: Initialize Firebase Hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUITESQUAD_EABE9 }}
-        run: |
-          firebase init hosting --project suitesquad-eabe9 --config firebase.json --non-interactive --only hosting
+        run: firebase init hosting --force --project suitesquad-eabe9
 
       # Step 7: Set up environment variables from GitHub Secrets
       - name: Set Environment Variables
