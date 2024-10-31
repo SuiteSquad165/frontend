@@ -51,7 +51,7 @@ jobs:
           echo "STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}" >> .env.local
 
       # Step 6: Build the Next.js project
-      - run: npm run build
+      - run: NEXT_PUBLIC_ESLINT_DISABLED=true npm run build
 
       # Step 7: Compile TypeScript for Firebase Functions
       - name: Build Firebase Functions

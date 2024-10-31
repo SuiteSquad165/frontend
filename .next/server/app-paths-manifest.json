@@ -1,7 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/bookings/page": "app/bookings/page.js",
-  "/checkout/page": "app/checkout/page.js",
-  "/api/payment/route": "app/api/payment/route.js",
-  "/api/confirm/route": "app/api/confirm/route.js"
-}
+{}
