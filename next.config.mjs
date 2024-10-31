@@ -31,7 +31,7 @@ const nextConfig = {
   },
 
   // This is for deployment build for firebase deployment
-  output: "export",
+  //output: "export",
 
   // Mapping internally with backend api
   async rewrites() {
