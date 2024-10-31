@@ -15,6 +15,9 @@
   "rules": {
     "prettier/prettier": "warn",
     "no-console": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "off", // Disables the TypeScript-specific unused vars rule
+    "@typescript-eslint/no-explicit-any": "off", // Disables errors for using 'any' type
+    "@typescript-eslint/no-empty-interface": "off" // Allows empty interfaces without warnings
   }
 }
