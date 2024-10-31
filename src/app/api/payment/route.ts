@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-import { type NextRequest, type NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const requestHeaders = new Headers(req.headers);
@@ -28,10 +28,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       mode: "payment",
       return_url: `${origin}/api/confirm?session_id={CHECKOUT_SESSION_ID}`,
     });
-    return Response.json({ clientSecret: session.client_secret });
+    return NextResponse.json({ clientSecret: session.client_secret });
   } catch (error) {
     console.log(error);
-    return Response.json(null, {
+    return NextResponse.json(null, {
       status: 500,
       statusText: "Internal Server Error",
     });
