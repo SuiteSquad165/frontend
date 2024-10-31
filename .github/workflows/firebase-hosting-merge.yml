@@ -21,10 +21,6 @@ jobs:
       # Step 3: Install dependencies for the main project
       - run: npm install
 
-      # Debug: List all files to verify functions directory exists
-      - name: List Project Files
-        run: ls -R
-
       # Step 4: Install dependencies for Firebase Functions
       - name: Install Functions Dependencies
         run: |
