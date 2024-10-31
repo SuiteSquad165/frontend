@@ -18,10 +18,18 @@ jobs:
         with:
           node-version: 20
 
-      # Step 3: Install dependencies
+      # Step 3: Install dependencies for the main project
       - run: npm install
 
-      # Step 4: Set environment variables from GitHub Secrets (if needed)
+      # Step 4: Install dependencies for Firebase Functions
+      - name: Install Functions Dependencies
+        run: |
+          cd functions
+          npm install
+        # Move back to the root directory
+        working-directory: ./functions
+
+      # Step 5: Set environment variables from GitHub Secrets (if needed)
       - name: Set Firebase Environment Variables
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
@@ -46,10 +54,17 @@ jobs:
           echo "NEXT_API_HOST=${NEXT_API_HOST}" >> .env.local
           echo "STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}" >> .env.local
 
-      # Step 5: Build the Next.js project
+      # Step 6: Build the Next.js project
       - run: npm run build
 
-      # Step 6: Deploy to Firebase Hosting
+      # Step 7: Compile TypeScript for Firebase Functions
+      - name: Build Firebase Functions
+        run: |
+          cd functions
+          npm run build
+        working-directory: ./functions
+
+      # Step 8: Deploy to Firebase Hosting and Functions
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
