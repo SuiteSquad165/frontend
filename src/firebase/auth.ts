@@ -42,7 +42,6 @@ export const signInWithGoogle = async (dispatch: AppDispatch) => {
 
     storeToken(accessToken, expiresAt);
     dispatch(setCurrentUser(result.user));
-    console.log(accessToken);
 
     const nameArr = result.user.displayName?.split(" ");
     const lastName = nameArr?.splice(-1, 1).join(" ") ?? "";
@@ -52,22 +51,6 @@ export const signInWithGoogle = async (dispatch: AppDispatch) => {
       firstName: nameArr?.join(" ") ?? result.user.displayName ?? "",
       lastName,
     };
-
-    // const response = await fetch("/auth/signup", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${accessToken}`,
-    //   },
-    //   body: JSON.stringify(customerData),
-    // });
-
-    // if (!response.ok) {
-    //   throw new Error("Failed to send customer info to backend");
-    // }
-
-    // console.log("Customer info sent to backend successfully");
-    // console.log(await response.json());
 
     await sendCustomerInfoToBackend(customerData);
 
