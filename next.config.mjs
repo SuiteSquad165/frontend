@@ -37,19 +37,17 @@ const nextConfig = {
   async rewrites() {
     const rewrites = [];
 
-    if (process.env.NODE_ENV === "development") {
-      const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "";
+    const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "";
 
-      rewrites.push({
-        source: "/auth/:path*",
-        destination: `${API_HOST}/auth/:path*`,
-      });
+    rewrites.push({
+      source: "/auth/:path*",
+      destination: `${API_HOST}/auth/:path*`,
+    });
 
-      rewrites.push({
-        source: "/:path*",
-        destination: `${API_HOST}/:path*`,
-      });
-    }
+    rewrites.push({
+      source: "/:path*",
+      destination: `${API_HOST}/:path*`,
+    });
 
     return rewrites;
   },
