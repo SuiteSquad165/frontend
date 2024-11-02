@@ -1,28 +1,39 @@
-// "use client";
+import { suiteSquadApi } from "./api";
 
-// import { suiteSquadApi } from "./api"; // Assuming suiteSquadApi is correctly configured
-// import { PropertyCardProps } from "@/utils/types"; // Imported type, but not used in this snippet
+type PingResponse = {
+  message: string;
+};
 
-// // Define the shape of the `/ping` response
-// type PingResponse = {
-//   message: string;
-// };
+export type CustomerInfo = {
+  email: string;
+  firstName: string;
+  lastName: string;
+};
 
-// const hotelApi = suiteSquadApi.injectEndpoints({
-//   endpoints: (builder) => ({
-//     // GET /ping query
-//     getTestApi: builder.query<PingResponse, void>({
-//       query: () => "/ping",
-//       transformResponse: (response: { data: PingResponse }) => response.data, // Ensure correct type here
-//     }),
+export const hotelApi = suiteSquadApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getTestApi: builder.query<PingResponse, void>({
+      query: () => "/ping",
+      transformResponse: (response: PingResponse) => response, // Adjusted if `data` wrapping isn’t necessary
+    }),
 
-//     // POST or GET /get_room_id?roomID=... mutation
-//     getRoomId: builder.mutation<string, string>({
-//       query: (roomID) => `/get_room_id?roomID=${roomID}`,
-//     }),
-//   }),
-//   overrideExisting: true, // Allows overriding existing endpoints if necessary
-// });
+    getRoomId: builder.mutation<string, string>({
+      query: (roomID) => `/get_room_id?roomID=${roomID}`,
+    }),
 
-// // Export the auto-generated hooks from RTK Query
-// export const {useGetTestApiQuery} = hotelApi;
+    customerAuth: builder.mutation<void, CustomerInfo>({
+      query: (customerInfo) => ({
+        url: "/auth/signup",
+        method: "POST",
+        body: customerInfo,
+      }),
+    }),
+  }),
+  overrideExisting: true,
+});
+
+export const {
+  useGetTestApiQuery,
+  useGetRoomIdMutation,
+  useCustomerAuthMutation,
+} = hotelApi;
