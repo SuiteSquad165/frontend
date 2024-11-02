@@ -38,9 +38,13 @@ const nextConfig = {
     const rewrites = [];
 
     if (process.env.NODE_ENV === "development") {
-      const API_HOST = process.env.API_HOST || "";
+      const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "";
 
-      // Existing lake rewrite
+      rewrites.push({
+        source: "/auth/:path*",
+        destination: `${API_HOST}/auth/:path*`,
+      });
+
       rewrites.push({
         source: "/:path*",
         destination: `${API_HOST}/:path*`,
