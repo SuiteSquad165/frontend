@@ -7,6 +7,7 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
+import withAuth from "../withAuth";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -43,4 +44,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default withAuth(CheckoutPage);
