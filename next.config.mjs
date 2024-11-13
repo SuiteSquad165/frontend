@@ -45,10 +45,10 @@ const nextConfig = {
       destination: `${API_HOST}/auth/:path*`,
     });
 
-    rewrites.push({
-      source: "/:path*",
-      destination: `${API_HOST}/:path*`,
-    });
+    // rewrites.push({
+    //   source: "/:path*",
+    //   destination: `${API_HOST}/:path*`,
+    // });
 
     return rewrites;
   },

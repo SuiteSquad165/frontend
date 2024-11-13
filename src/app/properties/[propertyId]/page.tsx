@@ -1,25 +1,26 @@
 /* eslint-disable */
-
-// Example: Dummy data for static paths generation
 import Reservation from "@/components/reservation/reservation";
-import dummyData from "@/utils/dummy-data";
 // Page component
-export default function PropertyPage({ params }: { params: any }) {
+export default async function PropertyPage({ params }: { params: any }) {
   const { propertyId } = params;
+  let property = [];
 
+  const isServer = typeof window === "undefined";
+  const baseURL = isServer ? process.env.NEXT_PUBLIC_API_HOST : "";
+
+  try {
+    const response = await fetch(`${baseURL}/rooms/${propertyId}`);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    } else property = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
   // Simulate fetching the data using the propertyId from params
-  const property = dummyData.find((p) => p.id.toString() === propertyId);
 
   if (!property) {
     return <div>Property not found</div>;
   }
 
   return <Reservation property={property} />;
-}
-
-// Use generateStaticParams to return all possible paths
-export async function generateStaticParams() {
-  return dummyData.map((property) => ({
-    propertyId: property.id.toString(),
-  }));
 }
