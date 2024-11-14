@@ -1,8 +1,8 @@
-import { Input } from "../shadcn-ui/input";
+import HotelSearchBar from "../hotel-search-bar/hotelsearchbar";
 
 const NavSearch = () => {
   return (
-    <Input type="text" placeholder="find a property..." className="max-w-xs" />
+    <HotelSearchBar/>
   );
 };
 

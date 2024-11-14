@@ -3,10 +3,9 @@
 import dummyData from "@/utils/dummy-data";
 import EmptyList from "../home/EmptyList";
 import SearchList from "./SearchList";
-import { Button } from "../shadcn-ui/button";
-import Image from "next/image";
-import filtericon from "./filter.ico"
 import { useState } from "react";
+import SearchFilter from "../search-filters/filtersidebar";
+import SearchBarItemForm from "../hotel-search-bar/searchbaritemform";
 
 const SearchContainer = () => {
   // To Do: Call API get data from database
@@ -33,11 +32,11 @@ const SearchContainer = () => {
 
   return (
     <>
-      <div className="float-right pl-2">
-        <input className="border p-1" placeholder="Search here... " onChange={e=> setQuery(e.target.value)}></input>
-        <Button size="icon" asChild>
-            <Image src={filtericon} alt="Icon"/>
-        </Button>
+      <div className="flex-col float-right w-1/4 ml-5 justify-around items-center shadow-md">
+          <SearchBarItemForm title="Search by property name" content={  
+            <input className="p-1 focus:outline-none" placeholder="Search property here... " onChange={e=> setQuery(e.target.value)}></input>
+          }/>
+          <SearchFilter/>
       </div>
       <SearchList properties={search(properties)} />
     </>
