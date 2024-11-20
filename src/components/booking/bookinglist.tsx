@@ -14,7 +14,7 @@ const BookingList = ({ properties }: { properties: PropertyCardProps[] }) => {
             property={property}
             button={
               <button className="bg-red-500 hover:bg-red-600 m-3 p-2 rounded">
-                <strong className="text-white">Remove</strong>
+                <strong className="text-white">Cancel</strong>
               </button>
             }
           />
