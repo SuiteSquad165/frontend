@@ -1,12 +1,21 @@
-import dummyData from "@/utils/dummy-data";
 import EmptyList from "./EmptyList";
 import PropertyList from "./PropertyList";
 
-const PropertiesContainer = () => {
-  // To Do: Call API get data from database
-  // Use dummy data to make this work at first
+const PropertiesContainer = async () => {
+  let properties = [];
 
-  const properties = dummyData;
+  const isServer = typeof window === "undefined";
+  const baseURL = isServer ? process.env.NEXT_PUBLIC_API_HOST : "";
+
+  try {
+    const response = await fetch(`${baseURL}/rooms`);
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    } else properties = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
 
   if (properties.length === 0) {
     return (

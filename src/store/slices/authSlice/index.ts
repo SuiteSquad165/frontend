@@ -10,10 +10,12 @@ export interface SerializableUser {
 
 interface AuthState {
   user: SerializableUser | null;
+  token: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
+  token: null,
 };
 
 // Helper to extract serializable fields from User object
@@ -29,11 +31,18 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<User | null>) => {
-      state.user = action.payload ? extractUserData(action.payload) : null;
+    setCurrentUser: (
+      state,
+      action: PayloadAction<{ user: User | null; token: string }>
+    ) => {
+      state.user = action.payload.user
+        ? extractUserData(action.payload.user)
+        : null;
+      state.token = action.payload.token;
     },
     clearUser: (state) => {
       state.user = null;
+      state.token = null;
     },
   },
 });

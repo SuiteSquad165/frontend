@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 "use client";
 
 import {
@@ -23,7 +25,6 @@ const LinksDropdown = () => {
   const handleSignIn = async () => {
     try {
       const user = await signInWithGoogle(dispatch);
-      console.log("User signed in:", user);
     } catch (error) {
       console.error("Sign-in failed:", error);
     }

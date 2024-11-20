@@ -5,12 +5,16 @@ import {
   UserCredential,
   signInWithPopup,
   GoogleAuthProvider,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { clearUser, setCurrentUser } from "@/store/slices/authSlice";
 import { AppDispatch } from "@/store";
 import { storeToken } from "@/utils/auth";
 import { jwtDecode } from "jwt-decode";
+import { sendCustomerInfoToBackend } from "@/utils/actions";
+import { CustomerInfo } from "@/hooks/useData";
 
 // Sign in with Email and Password
 export const login = async (
@@ -25,8 +29,9 @@ export const login = async (
   );
   const accessToken = await userCredential.user.getIdToken(true); // Force refresh token
   const expiresAt = jwtDecode<{ exp: number }>(accessToken).exp * 1000; // Token expiration
+
   storeToken(accessToken, expiresAt);
-  dispatch(setCurrentUser(userCredential.user));
+  dispatch(setCurrentUser({ user: userCredential.user, token: accessToken }));
   return userCredential;
 };
 
@@ -39,7 +44,19 @@ export const signInWithGoogle = async (dispatch: AppDispatch) => {
     const expiresAt = jwtDecode<{ exp: number }>(accessToken).exp * 1000;
 
     storeToken(accessToken, expiresAt);
-    dispatch(setCurrentUser(result.user));
+    dispatch(setCurrentUser({ user: result.user, token: accessToken }));
+
+    const nameArr = result.user.displayName?.split(" ");
+    const lastName = nameArr?.splice(-1, 1).join(" ") ?? "";
+
+    const customerData: CustomerInfo = {
+      email: result.user.email ?? "",
+      firstName: nameArr?.join(" ") ?? result.user.displayName ?? "",
+      lastName,
+    };
+
+    await sendCustomerInfoToBackend(customerData);
+
     return result.user;
   } catch (error) {
     console.error("Sign-in failed:", error);

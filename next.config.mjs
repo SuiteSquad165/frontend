@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -30,8 +31,27 @@ const nextConfig = {
     ],
   },
 
-  // This is for deployment build for firebase deployment
-  output: "export",
+  // This is for deployment build for STATIC firebase deployment
+  //output: "export",
+
+  // Mapping internally with backend api
+  async rewrites() {
+    const rewrites = [];
+
+    const API_HOST = process.env.NEXT_PUBLIC_API_HOST || "";
+
+    rewrites.push({
+      source: "/auth/:path*",
+      destination: `${API_HOST}/auth/:path*`,
+    });
+
+    // rewrites.push({
+    //   source: "/:path*",
+    //   destination: `${API_HOST}/:path*`,
+    // });
+
+    return rewrites;
+  },
 };
 
 export default nextConfig;
