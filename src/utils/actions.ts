@@ -1,4 +1,4 @@
-import { store } from "@/store"; // Adjust the path as needed
+import { AppDispatch, store } from "@/store"; // Adjust the path as needed
 import { hotelApi, CustomerInfo } from "@/hooks/useData"; // Adjust the path as needed
 import dummyData from "./dummy-data";
 import { calculateTotals } from "./calculateTotals";
@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 import { getAccessToken } from "./auth";
+import generateUniqueId from "generate-unique-id";
+import { useDispatch } from "react-redux";
+import { setBookingDetails } from "@/store/slices/bookingSlice";
 
 export const sendCustomerInfoToBackend = async (customerData: CustomerInfo) => {
   try {
@@ -101,77 +104,132 @@ export const fetchHotelReviews = async (hotelId: string) => {
   return hotelReviews;
 };
 
-export const createBookingAction = async (
-  prevState: {
-    hotelId: string;
-    roomId: string;
-    checkIn: Date;
-    checkOut: Date;
-    pricePerNight: number;
-    room: any;
-    hotel: any;
-  },
-  router: any
-) => {
-  const { hotelId, roomId, checkIn, checkOut, pricePerNight, hotel, room } =
-    prevState;
-
-  const { orderTotal, totalNights } = calculateTotals({
-    checkIn,
-    checkOut,
-    price: pricePerNight,
-  });
-
-  const bookingDetails = {
-    hotelId: hotelId,
-    roomId: roomId, // Defaulting to null as per response
-    roomsBooked: [
-      {
-        roomType: room.name,
-        price: pricePerNight,
-        quantity: 1,
-      },
-    ],
-    checkInDate: checkIn.toISOString(),
-    checkOutDate: checkOut.toISOString(),
-    totalPrice: orderTotal,
-    status: true, // Assuming booking is active by default
-    bookingDate: new Date().toISOString(), // Current timestamp
-    payment: {
-      paymentMethod: "Credit Card", // Payment method is not specified in prevState
-      paymentStatus: "Pending", // Default to pending; update dynamically if required
-      paymentDate: undefined, // Leave undefined until payment is processed
+export const createBookingAction =
+  (
+    prevState: {
+      hotelId: string;
+      roomId: string;
+      checkIn: Date;
+      checkOut: Date;
+      pricePerNight: number;
+      room: any;
+      hotel: any;
     },
-    cancellationPolicy: {
-      allowed: true,
-      penaltyFee: 200.0,
-      lastCancellationDate: undefined, // Not provided
-    },
-  };
+    router: any
+  ) =>
+  async (dispatch: AppDispatch) => {
+    console.log("createBookingAction called with prevState:", prevState);
 
-  try {
-    // Make API call to create reservation
-    const response = await axios.post("/auth/reservations", bookingDetails, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
+    const { hotelId, roomId, checkIn, checkOut, pricePerNight, hotel, room } =
+      prevState;
+
+    const { orderTotal, totalNights } = calculateTotals({
+      checkIn,
+      checkOut,
+      price: pricePerNight,
     });
 
-    console.log(response.data);
+    const bookingDetails = {
+      hotelId,
+      roomId,
+      nights: totalNights,
+      hotel,
+      roomsBooked: [
+        {
+          roomType: room?.name ?? "Unknown Room Type",
+          price: pricePerNight,
+          quantity: 1,
+        },
+      ],
+      checkIn,
+      checkOut,
+      totalPrice: orderTotal,
+      status: true,
+      bookingDate: new Date(),
+      payment: {
+        pointsUsed: 0,
+        paymentMethod: "Credit Card",
+        paymentStatus: "Pending",
+        paymentDate: undefined,
+      },
+      cancellationPolicy: {
+        allowed: true,
+        penaltyFee: 200.0,
+        lastCancellationDate: undefined,
+      },
+    };
 
-    const bookingId = response.data;
+    console.log("Generated bookingDetails:", bookingDetails);
 
-    if (!bookingId) {
-      throw new Error("Booking ID is undefined or invalid");
+    const sessionId = generateUniqueId();
+
+    try {
+      dispatch(setBookingDetails({ ...bookingDetails, sessionId }));
+      router.push(`/checkout?sessionId=${sessionId}`);
+    } catch (error) {
+      console.error("Error dispatching booking details:", error);
+      throw error;
     }
+  };
 
-    // Redirect using router.push
-    router.push(`/checkout?bookingId=${bookingId}`);
-  } catch (error) {
-    console.error("Error creating booking:", error);
-  }
-};
+// export const createBookingAction = async (
+//   prevState: {
+//     hotelId: string;
+//     roomId: string;
+//     checkIn: Date;
+//     checkOut: Date;
+//     pricePerNight: number;
+//     room: any;
+//     hotel: any;
+//   },
+//   router: any
+// ) => {
+//   const { hotelId, roomId, checkIn, checkOut, pricePerNight, room } = prevState;
+
+//   const { orderTotal, totalNights } = calculateTotals({
+//     checkIn,
+//     checkOut,
+//     price: pricePerNight,
+//   });
+
+//   // New structure for bookingDetails
+//   const bookingDetails = {
+//     roomId: roomId,
+//     nights: totalNights,
+//     payment: {
+//       pointsUsed: 0, // Adjust based on your logic
+//       paymentMethod: "Credit Card", // Default value
+//       paymentStatus: "Pending", // Default to pending
+//     },
+//     checkIn,
+//     checkOut,
+//   };
+
+//   try {
+//     // Make API call to create reservation
+//     const response = await axios.post("/auth/reservations", bookingDetails, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${await getAccessToken()}`,
+//       },
+//     });
+
+//     console.log(response.data);
+
+//     const bookingId = response.data;
+
+//     if (!bookingId) {
+//       throw new Error("Booking ID is undefined or invalid");
+//     }
+
+//     const sessionId = generateUniqueId();
+
+//     // Redirect using router.push
+//     router.push(`/checkout?sessionId=${sessionId}`);
+//   } catch (error) {
+//     console.error("Error creating booking:", error);
+//   }
+// };
 
 export async function createReviewAction(prevState: any, formData: FormData) {
   // const user = await getAuthUser();

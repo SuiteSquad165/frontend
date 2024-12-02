@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 "use client";
 
 import {
@@ -14,7 +12,7 @@ import Link from "next/link";
 import { Button } from "../shadcn-ui/button";
 import UserIcon from "./UserIcon";
 import { links } from "@/utils/links";
-import { useDispatch, useSelector, UseSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { logout, signInWithGoogle } from "@/firebase/auth";
 
@@ -24,14 +22,14 @@ const LinksDropdown = () => {
 
   const handleSignIn = async () => {
     try {
-      const user = await signInWithGoogle(dispatch);
+      await signInWithGoogle(dispatch);
     } catch (error) {
       console.error("Sign-in failed:", error);
     }
   };
 
-  const handleSignUp = () => {
-    // To Do Later
+  const handleSignOut = () => {
+    logout(dispatch);
   };
 
   return (
@@ -58,7 +56,7 @@ const LinksDropdown = () => {
               <Button
                 variant="ghost"
                 className="w-full capitalize justify-start pl-0 py-0 h-auto"
-                onClick={() => logout(dispatch)}
+                onClick={handleSignOut}
               >
                 Sign out
               </Button>
@@ -80,7 +78,7 @@ const LinksDropdown = () => {
               <Button
                 variant="ghost"
                 className="w-full capitalize justify-start pl-0 py-0 h-auto"
-                onClick={handleSignUp}
+                onClick={() => console.log("Register to be implemented")}
               >
                 Register
               </Button>

@@ -4,6 +4,7 @@ import authSlice from "./slices/authSlice";
 import { suiteSquadApi } from "@/hooks/api";
 import propertySlice from "./slices/propertySlice";
 import searchSlice from "./slices/searchSlice";
+import bookingSlice from "./slices/bookingSlice";
 
 // Initialize a single, shared store instance
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     property: propertySlice.reducer,
     search: searchSlice.reducer,
+    booking: bookingSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(suiteSquadApi.middleware),
