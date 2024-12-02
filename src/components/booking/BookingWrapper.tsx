@@ -9,6 +9,11 @@ import {
   setRoomId,
   setHotelId,
   setPrice,
+  setCleaningFee,
+  setServiceFee,
+  setTaxRate,
+  setCancellationFee,
+  setCancellationAllowed,
   setBookings,
   setHotel,
   setRoom,
@@ -27,6 +32,11 @@ export default function BookingWrapper({ room, hotel }: BookingWrapperProps) {
     dispatch(setRoomId(room.id));
     dispatch(setHotelId(hotel.id));
     dispatch(setPrice(room.pricePerNight));
+    dispatch(setCleaningFee(room.cleaningFee));
+    dispatch(setServiceFee(room.serviceFee));
+    dispatch(setTaxRate(room.taxRate));
+    dispatch(setCancellationFee(room.cancellationFee));
+    dispatch(setCancellationAllowed(room.cancellationAllowed));
     dispatch(setBookings(room?.bookings ?? []));
     dispatch(setHotel(hotel));
     dispatch(setRoom(room));

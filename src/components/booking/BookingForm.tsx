@@ -12,18 +12,21 @@ type BookingFormProps = {
 };
 
 function BookingForm({ roomName }: BookingFormProps) {
-  const { range, price } = useSelector((state: RootState) => state.property);
+  const { range, price, cleaningFee, serviceFee, taxRate } = useSelector((state: RootState) => state.property);
 
   if (!range || !range.from || !range.to) return null;
 
   const checkIn = range.from.toISOString().split("T")[0];
   const checkOut = range.to.toISOString().split("T")[0];
 
-  const { totalNights, subTotal, cleaning, service, tax, orderTotal } =
+  const { totalNights, subTotal, cleaning, service, orderTotal } =
     calculateTotals({
       checkIn,
       checkOut,
       price,
+      cleaning: cleaningFee,
+      service: serviceFee,
+      taxRate,
     });
 
   return (
@@ -33,7 +36,7 @@ function BookingForm({ roomName }: BookingFormProps) {
       <FormRow label={`$${price} x ${totalNights} nights`} amount={subTotal} />
       <FormRow label="Cleaning Fee" amount={cleaning} />
       <FormRow label="Service Fee" amount={service} />
-      <FormRow label="Tax" amount={tax} />
+      <FormRow label={`Tax (${taxRate * 100}%)`} amount={(subTotal + cleaning + service) * (1 + taxRate)} />
       <Separator className="mt-4" />
       <CardTitle className="mt-8">
         <FormRow label="Booking Total" amount={orderTotal} />
