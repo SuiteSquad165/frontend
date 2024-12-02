@@ -20,6 +20,7 @@ const CheckoutPageContent = async () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("sessionId");
   const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // Get booking details from Redux
   const bookingDetails = useSelector(
@@ -36,7 +37,10 @@ const CheckoutPageContent = async () => {
       // Send booking details along with the session ID to the API
       const response = await axios.post("/api/payment", {
         sessionId,
-        bookingDetails,
+        bookingDetails: {
+          ...bookingDetails,
+          recipientEmail: user?.email,
+        },
         token,
       });
 

@@ -48,7 +48,11 @@ const PropertyCard = ({ property }: { property: PropertyCardProps }) => {
         <div className="flex justify-between items-center mt-1">
           <p className="text-sm mt-1">
             <span className="font-semibold">
-              Lowest Price: {formatCurrency(lowestPricePerNight ?? 100)}/night
+              Lowest Price:{" "}
+              {formatCurrency(
+                lowestPricePerNight ?? Math.floor(Math.random() * 401)
+              )}
+              /night
             </span>
           </p>
           <Location city={city} />
