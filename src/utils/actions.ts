@@ -113,40 +113,24 @@ export const createBookingAction = async (
   },
   router: any
 ) => {
-  const { hotelId, roomId, checkIn, checkOut, pricePerNight, hotel, room } =
-    prevState;
+  const { roomId, checkIn, checkOut, pricePerNight } = prevState;
 
-  const { orderTotal, totalNights } = calculateTotals({
+  const { totalNights } = calculateTotals({
     checkIn,
     checkOut,
     price: pricePerNight,
   });
 
   const bookingDetails = {
-    hotelId: hotelId,
     roomId: roomId, // Defaulting to null as per response
-    roomsBooked: [
-      {
-        roomType: room.name,
-        price: pricePerNight,
-        quantity: 1,
-      },
-    ],
-    checkInDate: checkIn.toISOString(),
-    checkOutDate: checkOut.toISOString(),
-    totalPrice: orderTotal,
-    status: true, // Assuming booking is active by default
-    bookingDate: new Date().toISOString(), // Current timestamp
+    nights: totalNights,
     payment: {
       paymentMethod: "Credit Card", // Payment method is not specified in prevState
       paymentStatus: "Pending", // Default to pending; update dynamically if required
-      paymentDate: undefined, // Leave undefined until payment is processed
+      pointsUsed: 0,
     },
-    cancellationPolicy: {
-      allowed: true,
-      penaltyFee: 200.0,
-      lastCancellationDate: undefined, // Not provided
-    },
+    checkIn: checkIn.toISOString(),
+    checkOut: checkOut.toISOString(),
   };
 
   try {
