@@ -75,6 +75,6 @@ export const register = async (
 // Sign out
 export const logout = async (dispatch: AppDispatch): Promise<void> => {
   dispatch(clearUser());
-  sessionStorage.removeItem("tokenData");
+  localStorage.removeItem("tokenData");
   await signOut(auth);
 };

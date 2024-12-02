@@ -2,14 +2,14 @@ import { auth } from "@/firebase/config";
 
 const TOKEN_KEY = "tokenData";
 
-// Store token in sessionStorage
+// Store token in localStorage
 export const storeToken = (accessToken: string, expiresAt: number) => {
   const tokenData = { accessToken, expiresAt };
-  sessionStorage.setItem(TOKEN_KEY, btoa(JSON.stringify(tokenData)));
+  localStorage.setItem(TOKEN_KEY, btoa(JSON.stringify(tokenData)));
 };
 
 const getStoredToken = () => {
-  const tokenData = sessionStorage.getItem(TOKEN_KEY);
+  const tokenData = localStorage.getItem(TOKEN_KEY);
   return tokenData ? JSON.parse(atob(tokenData)) : null;
 };
 
