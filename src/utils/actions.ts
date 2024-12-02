@@ -32,7 +32,6 @@ export const fetchListRoomsDetails = async (id: any) => {
   } catch (error) {
     console.error(error);
   }
-  // console.log(roomDetails);
   return roomDetails;
 };
 
@@ -49,7 +48,6 @@ export const fetchHotelDetails = async (id: any) => {
   } catch (error) {
     console.error(error);
   }
-  console.log(hotelDetails);
   return hotelDetails;
 };
 

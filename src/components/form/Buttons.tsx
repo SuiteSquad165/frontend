@@ -85,9 +85,10 @@ export const IconButton = ({ actionType }: { actionType: actionType }) => {
         return <LuPenSquare />;
       case "delete":
         return <LuTrash2 />;
-      default:
+      default: {
         const never: never = actionType;
         throw new Error(`Invalid action type: ${never}`);
+      }
     }
   };
 
