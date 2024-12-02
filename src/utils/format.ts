@@ -19,3 +19,7 @@ export const formatDate = (date: Date, onlyMonth?: boolean) => {
 
   return new Intl.DateTimeFormat("en-US", options).format(date);
 };
+
+export const formatQuantity = (quantity: number, noun: string): string => {
+  return quantity === 1 ? `${quantity} ${noun}` : `${quantity} ${noun}s`;
+};

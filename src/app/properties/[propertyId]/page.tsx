@@ -1,26 +1,35 @@
-/* eslint-disable */
-import Reservation from "@/components/reservation/reservation";
-// Page component
-export default async function PropertyPage({ params }: { params: any }) {
-  const { propertyId } = params;
-  let property = [];
+import { fetchListRoomsDetails, fetchHotelDetails } from "@/utils/actions";
+import RoomDetails from "@/components/properties/RoomDetails";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache"; // Import revalidatePath from next/cache
 
-  const isServer = typeof window === "undefined";
-  const baseURL = isServer ? process.env.NEXT_PUBLIC_API_HOST : "";
-
-  try {
-    const response = await fetch(`${baseURL}/rooms/${propertyId}`);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    } else property = await response.json();
-  } catch (error) {
-    console.error(error);
-  }
-  // Simulate fetching the data using the propertyId from params
-
-  if (!property) {
-    return <div>Property not found</div>;
-  }
-
-  return <Reservation property={property} />;
+interface PropertyDetailsPageProps {
+  params: {
+    propertyId: string;
+  };
 }
+
+const PropertyDetailsPage = async ({ params }: PropertyDetailsPageProps) => {
+  try {
+    // Fetch both room and hotel details in parallel
+    const [roomDetails, hotelDetails] = await Promise.all([
+      fetchListRoomsDetails(params.propertyId),
+      fetchHotelDetails(params.propertyId),
+    ]);
+
+    // If either of the details is missing, redirect to home
+    if (!roomDetails || !hotelDetails) {
+      redirect("/");
+    }
+
+    // Trigger revalidation for the current path
+    revalidatePath(`/property/${params.propertyId}`);
+
+    return <RoomDetails hotel={hotelDetails} rooms={roomDetails} />;
+  } catch (error) {
+    console.error("Error fetching property details:", error);
+    redirect("/"); // Redirect in case of an error fetching data
+  }
+};
+
+export default PropertyDetailsPage;
