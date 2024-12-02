@@ -23,3 +23,13 @@ export const formatDate = (date: Date, onlyMonth?: boolean) => {
 export const formatQuantity = (quantity: number, noun: string): string => {
   return quantity === 1 ? `${quantity} ${noun}` : `${quantity} ${noun}s`;
 };
+
+export const formatDateStripe = (isoString: string): string => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};

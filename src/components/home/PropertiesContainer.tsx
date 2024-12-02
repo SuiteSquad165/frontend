@@ -5,6 +5,7 @@ import { RootState } from "@/store";
 import EmptyList from "./EmptyList";
 import PropertyList from "./PropertyList";
 import { useState, useEffect } from "react";
+import LoadingCards from "../card/LoadingCards";
 
 const PropertiesContainer = () => {
   const searchTerm = useSelector((state: RootState) => state.search.searchTerm);
@@ -35,7 +36,7 @@ const PropertiesContainer = () => {
   useEffect(() => {
     // Filter properties based on searchTerm
     const filtered = allProperties.filter((property: any) =>
-      property.city.toLowerCase().includes(searchTerm.toLowerCase()),
+      property.city.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProperties(filtered);
   }, [searchTerm, allProperties]); // Update filtered properties when searchTerm or allProperties change
@@ -43,9 +44,9 @@ const PropertiesContainer = () => {
   if (allProperties.length === 0) {
     return (
       <>
-        <div className="mt-4">
-          <h2 className="text-xl font-bold">Loading...</h2>
-        </div>
+        <LoadingCards />
+        <LoadingCards />
+        <LoadingCards />
       </>
     );
   } else if (filteredProperties.length === 0) {

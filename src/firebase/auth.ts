@@ -5,8 +5,6 @@ import {
   UserCredential,
   signInWithPopup,
   GoogleAuthProvider,
-  setPersistence,
-  browserSessionPersistence,
 } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { clearUser, setCurrentUser } from "@/store/slices/authSlice";
