@@ -6,6 +6,7 @@ export interface SerializableUser {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
+  rewardPoints: number;
 }
 
 interface AuthState {
@@ -19,11 +20,12 @@ const initialState: AuthState = {
 };
 
 // Helper to extract serializable fields from User object
-const extractUserData = (user: User): SerializableUser => ({
+const extractUserData = (user: any): SerializableUser => ({
   uid: user.uid,
   email: user.email,
   displayName: user.displayName,
   photoURL: user.photoURL,
+  rewardPoints: user.rewardPoints,
 });
 
 // Auth Slice
