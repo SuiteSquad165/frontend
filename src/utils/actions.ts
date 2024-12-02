@@ -115,17 +115,27 @@ export const createBookingAction =
       pricePerNight: number;
       room: any;
       hotel: any;
+      rewardPoints: number; // Accept rewardPoints as part of the payload
     },
     router: any
   ) =>
   async (dispatch: AppDispatch) => {
-    const { hotelId, roomId, checkIn, checkOut, pricePerNight, hotel, room } =
-      prevState;
+    const {
+      hotelId,
+      roomId,
+      checkIn,
+      checkOut,
+      pricePerNight,
+      hotel,
+      room,
+      rewardPoints,
+    } = prevState;
 
     const { orderTotal, totalNights } = calculateTotals({
       checkIn,
       checkOut,
       price: pricePerNight,
+      rewardPoints,
     });
 
     const bookingDetails = {

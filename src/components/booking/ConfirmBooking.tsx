@@ -8,7 +8,11 @@ import { RootState, AppDispatch } from "@/store";
 import SignInButton from "../auth/SignInButton";
 import { useRouter } from "next/navigation";
 
-function ConfirmBooking() {
+type ConfirmBookingProps = {
+  rewardPoints: number; // Add rewardPoints as a prop
+};
+
+function ConfirmBooking({ rewardPoints }: ConfirmBookingProps) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -37,6 +41,7 @@ function ConfirmBooking() {
             pricePerNight: price,
             hotel,
             room,
+            rewardPoints, // Pass reward points to the booking action
           },
           router
         )
