@@ -35,12 +35,20 @@ const PropertiesContainer = () => {
   useEffect(() => {
     // Filter properties based on searchTerm
     const filtered = allProperties.filter((property: any) =>
-      property.city.toLowerCase().includes(searchTerm.toLowerCase())
+      property.city.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredProperties(filtered);
   }, [searchTerm, allProperties]); // Update filtered properties when searchTerm or allProperties change
 
-  if (filteredProperties.length === 0) {
+  if (allProperties.length === 0) {
+    return (
+      <>
+        <div className="mt-4">
+          <h2 className="text-xl font-bold">Loading...</h2>
+        </div>
+      </>
+    );
+  } else if (filteredProperties.length === 0) {
     return (
       <EmptyList
         heading="No result."

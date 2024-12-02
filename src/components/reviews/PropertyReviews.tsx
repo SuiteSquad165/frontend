@@ -31,7 +31,7 @@ const PropertyReviews = async ({ propertyId }: { propertyId: string }) => {
             comment: contents,
             rating,
             name: profileName,
-            date: reviewDate,
+            date: reviewDate.substring(0, 10),
             // image: profileImage,
           };
           return <ReviewCard key={review.id} reviewInfo={reviewInfo} />;
