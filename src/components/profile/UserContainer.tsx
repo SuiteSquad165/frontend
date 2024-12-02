@@ -29,9 +29,6 @@ export default function UserContainer () {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Points Earned</TableHead>
-                    <TableHead  className="text-right">
-                        <button className="bg-[#00B4D8] text-white rounded-md w-1/2 h-full hover:bg-[#2292c2]">Redeem</button>  
-                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableFooter>
