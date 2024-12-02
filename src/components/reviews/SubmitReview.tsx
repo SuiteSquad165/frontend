@@ -11,14 +11,32 @@ import { Button } from "@/components/shadcn-ui/button";
 import { createReviewAction } from "@/utils/actions";
 import SignInButton from "@/components/auth/SignInButton"; // Adjust path as needed
 import { RootState } from "@/store";
+import { useToast } from "@/hooks/use-toast";
 
-function SubmitReview({ propertyId }: { propertyId: string }) {
+const SubmitReview = ({ propertyId }: { propertyId: string }) => {
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { toast } = useToast();
 
   const handleLeaveReviewClick = () => {
     if (!user) return; // If the user is not logged in, prevent toggling the review form
     setIsReviewFormVisible((prev) => !prev);
+  };
+
+  const handleReviewSubmission = async (formData: any) => {
+    try {
+      const response = await createReviewAction(propertyId, formData);
+      if (response?.message) {
+        toast({ description: response.message });
+        setIsReviewFormVisible(false); // Close the review form on success
+      }
+    } catch (error) {
+      toast({
+        description: "Failed to submit review. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Review submission error:", error);
+    }
   };
 
   return (
@@ -34,12 +52,12 @@ function SubmitReview({ propertyId }: { propertyId: string }) {
           </Button>
           {isReviewFormVisible && (
             <Card className="p-8 mt-8">
-              <FormContainer action={createReviewAction}>
+              <FormContainer action={handleReviewSubmission}>
                 <input type="hidden" name="propertyId" value={propertyId} />
                 <RatingInput name="rating" />
                 <TextAreaInput
-                  name="comment"
-                  labelText="feedback"
+                  name="contents"
+                  labelText="Feedback"
                   defaultValue="Amazing place !!!"
                 />
                 <SubmitButton text="Submit" className="mt-4" />
@@ -50,6 +68,6 @@ function SubmitReview({ propertyId }: { propertyId: string }) {
       )}
     </div>
   );
-}
+};
 
 export default SubmitReview;

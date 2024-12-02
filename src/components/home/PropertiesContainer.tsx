@@ -5,6 +5,7 @@ import { RootState } from "@/store";
 import EmptyList from "./EmptyList";
 import PropertyList from "./PropertyList";
 import { useState, useEffect } from "react";
+import LoadingCards from "../card/LoadingCards";
 
 const PropertiesContainer = () => {
   const searchTerm = useSelector((state: RootState) => state.search.searchTerm);
@@ -40,7 +41,15 @@ const PropertiesContainer = () => {
     setFilteredProperties(filtered);
   }, [searchTerm, allProperties]); // Update filtered properties when searchTerm or allProperties change
 
-  if (filteredProperties.length === 0) {
+  if (allProperties.length === 0) {
+    return (
+      <>
+        <LoadingCards />
+        <LoadingCards />
+        <LoadingCards />
+      </>
+    );
+  } else if (filteredProperties.length === 0) {
     return (
       <EmptyList
         heading="No result."

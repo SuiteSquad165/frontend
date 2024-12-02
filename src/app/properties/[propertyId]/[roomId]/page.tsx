@@ -33,7 +33,6 @@ const RoomDetailsPage = async ({ params }: any) => {
       fetchRoomDetails(propertyId, roomId),
     ]);
 
-    console.log(hotel);
     // Check if either hotel or room details are not found
     if (!room || !hotel) {
       notFound();

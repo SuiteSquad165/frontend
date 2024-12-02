@@ -1,13 +1,10 @@
-import { AppDispatch, store } from "@/store"; // Adjust the path as needed
-import { hotelApi, CustomerInfo } from "@/hooks/useData"; // Adjust the path as needed
-import dummyData from "./dummy-data";
+import { AppDispatch, store } from "@/store";
+import { hotelApi, CustomerInfo } from "@/hooks/useData";
 import { calculateTotals } from "./calculateTotals";
-import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 import { getAccessToken } from "./auth";
 import generateUniqueId from "generate-unique-id";
-import { useDispatch } from "react-redux";
 import { setBookingDetails } from "@/store/slices/bookingSlice";
 
 export const sendCustomerInfoToBackend = async (customerData: CustomerInfo) => {
@@ -23,22 +20,6 @@ export const sendCustomerInfoToBackend = async (customerData: CustomerInfo) => {
 };
 
 export const fetchListRoomsDetails = async (id: any) => {
-  // return dummyData.filter((hotel) => hotel.id === id)[0];
-  // let property = [];
-  // const isServer = typeof window === "undefined";
-  // const baseURL = isServer ? process.env.NEXT_PUBLIC_API_HOST : "";
-
-  // try {
-  //   const response = await fetch(`${baseURL}/rooms/${id}`);
-  //   if (!response.ok) {
-  //     throw new Error(`Response status: ${response.status}`);
-  //   } else property = await response.json();
-  // } catch (error) {
-  //   console.error(error);
-  // }
-
-  // return property;
-
   let roomDetails = [];
 
   try {
@@ -88,6 +69,26 @@ export const fetchRoomDetails = async (hotelId: any, roomId: any) => {
   return roomDetails;
 };
 
+export const fetchReservations = async () => {
+  let reservations = [];
+
+  try {
+    const accessToken = await getAccessToken(); // Ensure token retrieval
+    const response = await axios.get(`/auth/reservations?ts=${Date.now()}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // Correct Authorization header
+      },
+    });
+
+    // Ensure data is returned successfully
+    reservations = response.data;
+  } catch (error) {
+    console.error("Error fetching reservations:", error);
+  }
+
+  return reservations;
+};
+
 export const fetchHotelReviews = async (hotelId: string) => {
   let hotelReviews = [];
 
@@ -118,8 +119,6 @@ export const createBookingAction =
     router: any
   ) =>
   async (dispatch: AppDispatch) => {
-    console.log("createBookingAction called with prevState:", prevState);
-
     const { hotelId, roomId, checkIn, checkOut, pricePerNight, hotel, room } =
       prevState;
 
@@ -130,36 +129,20 @@ export const createBookingAction =
     });
 
     const bookingDetails = {
+      roomId: roomId,
       hotelId,
-      roomId,
-      nights: totalNights,
       hotel,
-      roomsBooked: [
-        {
-          roomType: room?.name ?? "Unknown Room Type",
-          price: pricePerNight,
-          quantity: 1,
-        },
-      ],
-      checkIn,
-      checkOut,
-      totalPrice: orderTotal,
-      status: true,
-      bookingDate: new Date(),
+      room,
+      orderTotal,
+      nights: totalNights,
       payment: {
         pointsUsed: 0,
         paymentMethod: "Credit Card",
-        paymentStatus: "Pending",
-        paymentDate: undefined,
+        paymentStatus: "Success",
       },
-      cancellationPolicy: {
-        allowed: true,
-        penaltyFee: 200.0,
-        lastCancellationDate: undefined,
-      },
+      checkIn,
+      checkOut,
     };
-
-    console.log("Generated bookingDetails:", bookingDetails);
 
     const sessionId = generateUniqueId();
 
@@ -172,75 +155,62 @@ export const createBookingAction =
     }
   };
 
-// export const createBookingAction = async (
-//   prevState: {
-//     hotelId: string;
-//     roomId: string;
-//     checkIn: Date;
-//     checkOut: Date;
-//     pricePerNight: number;
-//     room: any;
-//     hotel: any;
-//   },
-//   router: any
-// ) => {
-//   const { hotelId, roomId, checkIn, checkOut, pricePerNight, room } = prevState;
-
-//   const { orderTotal, totalNights } = calculateTotals({
-//     checkIn,
-//     checkOut,
-//     price: pricePerNight,
-//   });
-
-//   // New structure for bookingDetails
-//   const bookingDetails = {
-//     roomId: roomId,
-//     nights: totalNights,
-//     payment: {
-//       pointsUsed: 0, // Adjust based on your logic
-//       paymentMethod: "Credit Card", // Default value
-//       paymentStatus: "Pending", // Default to pending
-//     },
-//     checkIn,
-//     checkOut,
-//   };
-
-//   try {
-//     // Make API call to create reservation
-//     const response = await axios.post("/auth/reservations", bookingDetails, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${await getAccessToken()}`,
-//       },
-//     });
-
-//     console.log(response.data);
-
-//     const bookingId = response.data;
-
-//     if (!bookingId) {
-//       throw new Error("Booking ID is undefined or invalid");
-//     }
-
-//     const sessionId = generateUniqueId();
-
-//     // Redirect using router.push
-//     router.push(`/checkout?sessionId=${sessionId}`);
-//   } catch (error) {
-//     console.error("Error creating booking:", error);
-//   }
-// };
-
-export async function createReviewAction(prevState: any, formData: FormData) {
-  // const user = await getAuthUser();
+export const cancelReservation = async (id: string) => {
+  let cancelationFees = 0;
   try {
-    const rawData = Object.fromEntries(formData);
+    const accessToken = await getAccessToken(); // Ensure token retrieval
+    const response = await axios.delete(
+      `/auth/reservations/${id}?ts=${Date.now()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Correct Authorization header
+        },
+      }
+    );
 
-    // const validatedFields = validateWithZodSchema(createReviewSchema, rawData);
-
-    revalidatePath(`/properties/${rawData.propertyId}`);
-    return { message: "Review submitted successfully" };
+    // Ensure data is returned successfully
+    cancelationFees = response.data;
   } catch (error) {
-    return console.error(error);
+    console.error("Error fetching reservations:", error);
+  }
+
+  return cancelationFees;
+};
+
+export async function createReviewAction(propertyId: string, formData: any) {
+  try {
+    // Ensure formData is an instance of FormData
+    if (!(formData instanceof FormData)) {
+      throw new Error("Invalid formData: Expected FormData instance");
+    }
+
+    // Add `reviewDate` to rawData
+    const rawData = {
+      ...Object.fromEntries(formData.entries()), // Convert FormData to plain object
+      reviewDate: new Date().toISOString(), // Add current date-time as ISO string
+    };
+
+    const token = await getAccessToken();
+
+    const response = await axios.post(
+      `/auth/hotels/${propertyId}/reviews`,
+      rawData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      revalidatePath(`/properties/${propertyId}`);
+      return { message: "Review submitted successfully" };
+    } else {
+      throw new Error("Failed to submit review");
+    }
+  } catch (error) {
+    console.error("Error submitting review:", error);
+    throw error;
   }
 }

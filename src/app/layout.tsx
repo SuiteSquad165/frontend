@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import StoreProvider from "@/store/provider";
+import { Toaster } from "@/components/shadcn-ui/toaster";
 
 export const metadata: Metadata = {
   title: "LikeHome",
@@ -23,6 +24,7 @@ export default function RootLayout({
           <Navbar />
           <main className="container py-10">{children}</main>
         </StoreProvider>
+        <Toaster />
       </body>
     </html>
   );

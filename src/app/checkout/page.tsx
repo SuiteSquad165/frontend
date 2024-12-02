@@ -10,14 +10,16 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import withAuth from "../withAuth";
+import { getAccessToken } from "@/utils/auth";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
-const CheckoutPageContent = () => {
+const CheckoutPageContent = async () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("sessionId");
+  const token = useSelector((state: RootState) => state.auth.token);
 
   // Get booking details from Redux
   const bookingDetails = useSelector(
@@ -34,8 +36,10 @@ const CheckoutPageContent = () => {
       // Send booking details along with the session ID to the API
       const response = await axios.post("/api/payment", {
         sessionId,
-        bookingDetails, // Pass booking details to the API
+        bookingDetails,
+        token,
       });
+
       console.log(response.data);
       return response.data.clientSecret;
     } catch (error) {
