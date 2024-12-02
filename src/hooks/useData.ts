@@ -8,6 +8,7 @@ export type CustomerInfo = {
   email: string;
   firstName: string;
   lastName: string;
+  rewardPoints: number;
 };
 
 export const hotelApi = suiteSquadApi.injectEndpoints({

@@ -32,6 +32,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "debounce": "^2.2.0",
     "firebase": "^10.14.1",
     "generate-unique-id": "^2.0.3",
     "jwt-decode": "^4.0.0",

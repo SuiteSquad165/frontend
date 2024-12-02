@@ -105,6 +105,26 @@ export const fetchHotelReviews = async (hotelId: string) => {
   return hotelReviews;
 };
 
+export const fetchUserInfo = async () => {
+  try {
+    const accessToken = await getAccessToken();
+    const response = await axios.post(
+      "/auth/signin",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    throw error;
+  }
+};
+
 export const createBookingAction =
   (
     prevState: {
