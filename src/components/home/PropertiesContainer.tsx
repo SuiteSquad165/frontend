@@ -16,7 +16,7 @@ const PropertiesContainer = () => {
     try {
       // Fetch from Spring backend
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/hotels?minRating=0`
+        `${process.env.NEXT_PUBLIC_API_HOST}/hotels`,
       );
       if (!response.ok) {
         throw new Error(`Failed to fetch rooms: ${response.status}`);
