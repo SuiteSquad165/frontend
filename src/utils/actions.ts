@@ -204,7 +204,6 @@ export async function createReviewAction(propertyId: string, formData: any) {
     );
 
     if (response.status === 200) {
-      revalidatePath(`/properties/${propertyId}`);
       return { message: "Review submitted successfully" };
     } else {
       throw new Error("Failed to submit review");

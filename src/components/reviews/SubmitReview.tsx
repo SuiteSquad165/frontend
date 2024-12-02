@@ -9,17 +9,23 @@ import RatingInput from "@/components/form/RatingInput";
 import TextAreaInput from "@/components/form/TextAreaInput";
 import { Button } from "@/components/shadcn-ui/button";
 import { createReviewAction } from "@/utils/actions";
-import SignInButton from "@/components/auth/SignInButton"; // Adjust path as needed
+import SignInButton from "@/components/auth/SignInButton";
 import { RootState } from "@/store";
 import { useToast } from "@/hooks/use-toast";
 
-const SubmitReview = ({ propertyId }: { propertyId: string }) => {
+const SubmitReview = ({
+  propertyId,
+  onReviewSubmitted,
+}: {
+  propertyId: string;
+  onReviewSubmitted: () => void;
+}) => {
   const [isReviewFormVisible, setIsReviewFormVisible] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
   const { toast } = useToast();
 
   const handleLeaveReviewClick = () => {
-    if (!user) return; // If the user is not logged in, prevent toggling the review form
+    if (!user) return; // Prevent toggling if not logged in
     setIsReviewFormVisible((prev) => !prev);
   };
 
@@ -29,6 +35,7 @@ const SubmitReview = ({ propertyId }: { propertyId: string }) => {
       if (response?.message) {
         toast({ description: response.message });
         setIsReviewFormVisible(false); // Close the review form on success
+        onReviewSubmitted(); // Trigger refetch of reviews
       }
     } catch (error) {
       toast({

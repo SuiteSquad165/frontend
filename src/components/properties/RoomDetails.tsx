@@ -12,13 +12,13 @@ const RoomDetails = ({
 }) => {
   const router = useRouter();
 
-  const [rooms, setRooms] = useState(roomsDetails);
-  const [sortCriteria, setSortCriteria] = useState<string>("");
-  const [filters, setFilters] = useState({ guests: 0, beds: 0 });
+  const [rooms, setRooms] = useState(roomsDetails); // Displayed rooms
+  const [sortCriteria, setSortCriteria] = useState<string>(""); // Sorting criteria
+  const [filters, setFilters] = useState({ guests: 0, beds: 0 }); // Filters
 
   // Apply filters and sorting dynamically
   useEffect(() => {
-    let filteredRooms = rooms;
+    let filteredRooms = [...roomsDetails]; // Always start with the original roomsDetails
 
     // Apply filters
     if (filters.guests > 0) {
