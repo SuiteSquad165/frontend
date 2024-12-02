@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 function ConfirmBooking() {
   const router = useRouter();
 
-  const { roomId, hotelId, range, price, hotel, room } = useSelector(
+  const { roomId, hotelId, range, price, cleaningFee, serviceFee, taxRate, hotel, room } = useSelector(
     (state: RootState) => state.property
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -33,6 +33,9 @@ function ConfirmBooking() {
           checkIn,
           checkOut,
           pricePerNight: price,
+          cleaningFee,
+          serviceFee,
+          taxRate,
           hotel,
           room,
         },

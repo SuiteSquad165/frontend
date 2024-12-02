@@ -108,17 +108,23 @@ export const createBookingAction = async (
     checkIn: Date;
     checkOut: Date;
     pricePerNight: number;
+    cleaningFee: number;
+    serviceFee: number;
+    taxRate: number;
     room: any;
     hotel: any;
   },
   router: any
 ) => {
-  const { roomId, checkIn, checkOut, pricePerNight } = prevState;
+  const { roomId, checkIn, checkOut, pricePerNight, cleaningFee, serviceFee, taxRate } = prevState;
 
   const { totalNights } = calculateTotals({
     checkIn,
     checkOut,
     price: pricePerNight,
+    cleaning: cleaningFee,
+    service: serviceFee,
+    taxRate: taxRate,
   });
 
   const bookingDetails = {

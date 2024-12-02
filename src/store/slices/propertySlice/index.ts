@@ -6,6 +6,11 @@ type PropertyState = {
   roomId: string;
   hotelId: string;
   price: number;
+  cleaningFee: number;
+  serviceFee: number;
+  taxRate: number;
+  cancellationFee: number;
+  cancellationAllowed: boolean;
   bookings: Booking[];
   range: DateRange | undefined;
   room: any;
@@ -16,6 +21,11 @@ const initialState: PropertyState = {
   roomId: "",
   hotelId: "",
   price: 0,
+  cleaningFee: 0,
+  serviceFee: 0,
+  taxRate: 0,
+  cancellationFee: 0,
+  cancellationAllowed: true,
   bookings: [],
   range: undefined,
   room: null,
@@ -34,6 +44,21 @@ const propertySlice = createSlice({
     },
     setPrice(state, action: PayloadAction<number>) {
       state.price = action.payload;
+    },
+    setCleaningFee(state, action: PayloadAction<number>) {
+      state.cleaningFee = action.payload;
+    },
+    setServiceFee(state, action: PayloadAction<number>) {
+      state.serviceFee = action.payload;
+    },
+    setTaxRate(state, action: PayloadAction<number>) {
+      state.taxRate = action.payload;
+    },
+    setCancellationFee(state, action: PayloadAction<number>) {
+      state.cancellationFee = action.payload;
+    },
+    setCancellationAllowed(state, action: PayloadAction<boolean>) {
+      state.cancellationAllowed = action.payload;
     },
     setBookings(state, action: PayloadAction<Booking[]>) {
       state.bookings = action.payload;
@@ -54,6 +79,11 @@ export const {
   setHotelId,
   setRoomId,
   setPrice,
+  setCleaningFee,
+  setServiceFee,
+  setTaxRate,
+  setCancellationFee,
+  setCancellationAllowed,
   setBookings,
   setRange,
   setRoom,

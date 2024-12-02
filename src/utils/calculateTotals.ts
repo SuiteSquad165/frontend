@@ -3,19 +3,23 @@ import { calculateDaysBetween } from "@/utils/calendar";
 type BookingDetails = {
   checkIn: any;
   checkOut: any;
-  price: any;
+  price: number;
+  cleaning: number;
+  service: number;
+  taxRate: number;
 };
 
 export const calculateTotals = ({
   checkIn,
   checkOut,
   price,
+  cleaning,
+  service,
+  taxRate,
 }: BookingDetails) => {
   const totalNights = calculateDaysBetween({ checkIn, checkOut });
   const subTotal = totalNights * price;
-  const cleaning = 21;
-  const service = 40;
-  const tax = subTotal * 0.1;
-  const orderTotal = subTotal + cleaning + service + tax;
-  return { totalNights, subTotal, cleaning, service, tax, orderTotal };
+  if (!taxRate) taxRate = 0;
+  const orderTotal = (subTotal + cleaning + service) * (1 + taxRate);
+  return { totalNights, subTotal, cleaning, service, taxRate, orderTotal };
 };
