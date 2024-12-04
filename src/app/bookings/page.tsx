@@ -107,7 +107,7 @@ const BookingsPage = () => {
             ? {
                 ...reservation,
                 cancelled: true,
-                totalPrice: reservation.totalPrice - cancelationFees,
+                totalPrice: Math.max(reservation.totalPrice - cancelationFees, 0),
                 payment: {
                   ...reservation.payment,
                   paymentStatus: "Refunded",
