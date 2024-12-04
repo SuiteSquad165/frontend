@@ -101,6 +101,12 @@ const BookingsPage = () => {
     try {
       const cancelationFees = await cancelReservation(reservationId);
 
+      toast({
+        title: "Cancellation Note",
+        description: `A cancellation fee will be deducted from total if you cancel your reservation.`,
+        duration: 5000,
+      });
+
       setReservations((prev) =>
         prev.map((reservation) =>
           reservation.id === reservationId
